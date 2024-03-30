@@ -1,0 +1,40 @@
+import random
+
+# Sample text corpus
+corpus = [
+    "The cat sat on the mat.",
+    "The dog barked loudly.",
+    "A bird flew across the sky.",
+    "The sun shines bright."
+]
+
+# Function to build a Markov chain model from the corpus
+def build_markov_model(corpus):
+    markov_model = {}
+    for sentence in corpus:
+        words = sentence.split()
+        for i in range(len(words) - 1):
+            if words[i] not in markov_model:
+                markov_model[words[i]] = []
+            markov_model[words[i]].append(words[i + 1])
+    return markov_model
+
+# Generate random text using the Markov chain model
+def generate_text(markov_model, length=10):
+    current_word = random.choice(list(markov_model.keys()))
+    generated_text = current_word
+    for _ in range(length - 1):
+        if current_word in markov_model:
+            next_word = random.choice(markov_model[current_word])
+            generated_text += " " + next_word
+            current_word = next_word
+        else:
+            break
+    return generated_text
+
+# Build the Markov chain model
+markov_model = build_markov_model(corpus)
+
+# Generate random text
+generated_text = generate_text(markov_model, length=10)
+print(generated_text)
